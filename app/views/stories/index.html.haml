@@ -1,5 +1,15 @@
 %h1 Listing stories
 
+=#@results.inspect
+%h1= @pages
+-@results.each do|result|
+  %ul
+  -result.each do |name, value|
+    %li
+      %strong=name
+      %span=value
+
+
 %table
   %tr
     %th Title
