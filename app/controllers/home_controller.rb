@@ -1,6 +1,4 @@
-#rails generate scaffold Post name:string title:string content:text
-
-#rails generare scaffold Story title:string author:string story_id:int author_id:int summary:text rating:string language:string theme:text chapters:int words:int reviews:int complete:boolean characters:text published:date updates:date
+#rails generate scaffold Story title:string ff_id:integer author_id:integer summary:text rating:string language:string theme:text chapters:integer words:integer reviews:integer complete:boolean characters:text published:date updates:date
 class HomeController < ApplicationController
   helper_method :my_shared_method
 

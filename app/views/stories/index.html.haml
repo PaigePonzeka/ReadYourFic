@@ -1,0 +1,45 @@
+%h1 Listing stories
+
+%table
+  %tr
+    %th Title
+    %th Ff
+    %th Author
+    %th Summary
+    %th Rating
+    %th Language
+    %th Theme
+    %th Chapters
+    %th Words
+    %th Reviews
+    %th Complete
+    %th Characters
+    %th Published
+    %th Updates
+    %th
+    %th
+    %th
+
+  - @stories.each do |story|
+    %tr
+      %td= story.title
+      %td= story.ff_id
+      %td= story.author_id
+      %td= story.summary
+      %td= story.rating
+      %td= story.language
+      %td= story.theme
+      %td= story.chapters
+      %td= story.words
+      %td= story.reviews
+      %td= story.complete
+      %td= story.characters
+      %td= story.published
+      %td= story.updates
+      %td= link_to 'Show', story
+      %td= link_to 'Edit', edit_story_path(story)
+      %td= link_to 'Destroy', story, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Story', new_story_path

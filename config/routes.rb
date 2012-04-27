@@ -1,4 +1,6 @@
 Glee::Application.routes.draw do
+  resources :stories
+
   resources :authors
 
   get "home/index"

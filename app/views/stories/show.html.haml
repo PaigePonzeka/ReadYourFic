@@ -1,0 +1,48 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @story.title
+%p
+  %b Ff:
+  = @story.ff_id
+%p
+  %b Author:
+  = @story.author_id
+%p
+  %b Summary:
+  = @story.summary
+%p
+  %b Rating:
+  = @story.rating
+%p
+  %b Language:
+  = @story.language
+%p
+  %b Theme:
+  = @story.theme
+%p
+  %b Chapters:
+  = @story.chapters
+%p
+  %b Words:
+  = @story.words
+%p
+  %b Reviews:
+  = @story.reviews
+%p
+  %b Complete:
+  = @story.complete
+%p
+  %b Characters:
+  = @story.characters
+%p
+  %b Published:
+  = @story.published
+%p
+  %b Updates:
+  = @story.updates
+
+= link_to 'Edit', edit_story_path(@story)
+\|
+= link_to 'Back', stories_path

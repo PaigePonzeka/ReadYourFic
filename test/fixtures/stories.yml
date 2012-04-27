@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  title: MyString
+  ff_id: 1
+  author_id: 1
+  summary: MyText
+  rating: MyString
+  language: MyString
+  theme: MyText
+  chapters: 1
+  words: 1
+  reviews: 1
+  complete: false
+  characters: MyText
+  published: 2012-04-27
+  updates: 2012-04-27
+
+two:
+  title: MyString
+  ff_id: 1
+  author_id: 1
+  summary: MyText
+  rating: MyString
+  language: MyString
+  theme: MyText
+  chapters: 1
+  words: 1
+  reviews: 1
+  complete: false
+  characters: MyText
+  published: 2012-04-27
+  updates: 2012-04-27
