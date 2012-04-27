@@ -108,19 +108,19 @@ class StoriesController < ApplicationController
       #doc= Nokogiri::HTML(open("http://www.fanfiction.net/tv/Glee/3/0/0/1/0/0/0/0/0/#{i}/"))
       doc= Nokogiri::HTML(open("/Users/paigep/Documents/scraper/test.html"))
       doc.xpath('//div[@class = "z-list"]').each do |node|
-        @result = Hash.new
+        @result = Story.new(params[:story])
         # get an array of the all the links
         links = Array.new
         node.xpath('./a').each do |link_node|
           links.push(link_node)
         end
          # the first link is the title
-         @result['title'] = links[0].content
+         @result.title = links[0].content
          #@result['story_url'] = links[0]['href']
 
          # get story id
          url_split = links[0]['href'].split('/')
-         @result['story_id'] = url_split[url_split.length-3]
+         @result.ff_id = url_split[url_split.length-3]
 
          # the last link is reviews link or the author link
          last_link = links[links.length-1]
@@ -130,12 +130,15 @@ class StoriesController < ApplicationController
            links.pop()
            last_link = links[links.length-1]
          end
-        @result['author'] = last_link.content
-        #@result['author_url'] = last_link['href']
-        # get the author id
-        author_url_split = last_link['href'].split('/')
-        @result['author_id'] = author_url_split[author_url_split.length-2]
 
+
+        # Creating and saving author
+        @author = Author.new(params[:author])
+        @author.name = last_link.content
+        author_url_split = last_link['href'].split('/')
+        @author.ff_id = author_url_split[author_url_split.length-2]
+        @author.save
+        @result.author = @author.id
 
         # get the gray section (details)
         gray = ""
@@ -159,15 +162,20 @@ class StoriesController < ApplicationController
             # complete status
             if ((detail_split[0] <=> "Complete") == 0)
               tags[detail_split[0]] = true
+              @result.complete = true
             # language
             elsif count == 2
               tags["Language"] = detail_split[0]
+              @result.language = true
             # Theme
             elsif count == 3
               tags["Theme"] = detail_split[0].split("/")
+              @result.theme = detail_split[0].split("/")
             # Main Characters
             elsif count == 9
               tags["Characters"] = detail_split[0].split(" & ")
+              @result.characters = detail_split[0].split(" & ")
+
             end
 
           end
@@ -176,12 +184,13 @@ class StoriesController < ApplicationController
 
         # get the summary
         node.xpath('./div').each do |summary_node|
-           @result["summary"] = summary_node.content
+           #@result["summary"] = summary_node.content
+           @result.summary = summary_node.content
         end
 
-        @result["tags"] = tags
-
-        @results.push(@result)
+        #@result["tags"] = tags
+        @result.save
+        #@results.push(@result)
       end
     end
 
