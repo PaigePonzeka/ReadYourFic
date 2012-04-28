@@ -3,7 +3,7 @@ class StoriesController < ApplicationController
   # GET /stories
   # GET /stories.json
   def index
-    generate_stories
+    #generate_stories
     @stories = Story.all(:order => "title ASC")
 
     respond_to do |format|
@@ -167,12 +167,19 @@ class StoriesController < ApplicationController
             # Theme
             elsif count == 3
               story_content['theme'] = detail_split[0].split("/")
-            # Main Characters
-            elsif (count == 9 || (count == 8 && !(story_content['reviews'])))
-              # characters doesn't always work
-              story_content['characters'] = detail_split[0].split(" & ")
-
             end
+
+            # Main Characters
+            if (count == details.length)
+              if (details[details.length-1] <=> "Complete") != 0
+                # story isn't complete characters are the last one
+                story_content['characters'] = detail_split[0].split(" & ")
+              else
+                # story is complete characters are the second to last one
+                story_content['characters'] = details[details.length-2].split(" & ")
+              end
+            end
+
 
           end
           count+=1
@@ -217,6 +224,11 @@ class StoriesController < ApplicationController
 
       # TODO need to upgrade words data type
       # TODO converting published and updated to actual dates datatypes
+      # TODO default completed to false
+      # TODO using helpers to generate author and story url
+      # TODO button to run the script
+      # TODO button to clear the database
+      # TODO updating the database instead of replacing data
     else
       story = Story.new(params[:story])
       story.title   = story_content['title']
