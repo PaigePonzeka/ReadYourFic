@@ -152,6 +152,7 @@ class StoriesController < ApplicationController
         tags = Hash.new
         # split each of those by :
         count = 1
+        story_content['reviews'] = '0'
         details.each do |detail|
           detail_split = detail.split(":")
           # If there is nothing in the second one that it isn't a set
@@ -184,15 +185,12 @@ class StoriesController < ApplicationController
             if story_content['complete'] != true
               story_content['complete'] = false
             end
-
-
           end
           count+=1
         end
 
         # get the summary
         node.xpath('./div').each do |summary_node|
-           #@result["summary"] = summary_node.content
            story_content['summary'] = summary_node.content
         end
 
@@ -226,15 +224,11 @@ class StoriesController < ApplicationController
     # check to see if a story with that FF id exists
     if story_item
       # update the story with the current data
-      story_item.update_attributes(:title => story_content['published'], :author => story_content['author'], :ff_id => story_content['ff_id'], :summary => story_content['summary'], :complete => story_content['complete'], :language => story_content['language'], :theme =>  story_content['theme'], :characters =>  story_content['characters'], :reviews => s_to_num(story_content['reviews']), :chapters => s_to_num(story_content['chapters']), :rating => story_content['rated'],:published => s_to_date(story_content['published']), :words => s_to_num(story_content['words']), :updated =>  s_to_date(story_content['updated']) )
+      story_item.update_attributes(:title => story_content['title'], :author => story_content['author'], :ff_id => story_content['ff_id'], :summary => story_content['summary'], :complete => story_content['complete'], :language => story_content['language'], :theme =>  story_content['theme'], :characters =>  story_content['characters'], :reviews => s_to_num(story_content['reviews']), :chapters => s_to_num(story_content['chapters']), :rating => story_content['rated'],:published => s_to_date(story_content['published']), :words => s_to_num(story_content['words']), :updated =>  s_to_date(story_content['updated']) )
 
-      # TODO converting published and updated to actual dates datatypes
-      # TODO default completed to false
       # TODO using helpers to generate author and story url
       # TODO button to run the script
       # TODO button to clear the database
-      #-story_content['published']
-      #Date.strptime("31/01/2010", "%m/%d/%y")
     else
       story = Story.new(params[:story])
       story.title   = story_content['title']
