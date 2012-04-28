@@ -4,7 +4,7 @@ class StoriesController < ApplicationController
   # GET /stories.json
   def index
     generate_stories
-    @stories = Story.all
+    @stories = Story.all(:order => "title ASC")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -108,19 +108,21 @@ class StoriesController < ApplicationController
       #doc= Nokogiri::HTML(open("http://www.fanfiction.net/tv/Glee/3/0/0/1/0/0/0/0/0/#{i}/"))
       doc= Nokogiri::HTML(open("/Users/paigep/Documents/scraper/test.html"))
       doc.xpath('//div[@class = "z-list"]').each do |node|
-        @result = Story.new(params[:story])
+
+        story_content = Hash.new
+
         # get an array of the all the links
         links = Array.new
         node.xpath('./a').each do |link_node|
           links.push(link_node)
         end
          # the first link is the title
-         @result.title = links[0].content
+         story_content["title"] = links[0].content
          #@result['story_url'] = links[0]['href']
 
          # get story id
          url_split = links[0]['href'].split('/')
-         @result.ff_id = url_split[url_split.length-3]
+         story_content['ff_id'] = url_split[url_split.length-3]
 
          # the last link is reviews link or the author link
          last_link = links[links.length-1]
@@ -131,14 +133,11 @@ class StoriesController < ApplicationController
            last_link = links[links.length-1]
          end
 
-
-        # Creating and saving author
-        @author = Author.new(params[:author])
-        @author.name = last_link.content
+         # Set the author
+        author_name = last_link.content
         author_url_split = last_link['href'].split('/')
-        @author.ff_id = author_url_split[author_url_split.length-2]
-        @author.save
-        @result.author = @author.id
+        author_ff_id = author_url_split[author_url_split.length-2]
+        story_content['author'] = generate_author(author_name, author_ff_id)
 
         # get the gray section (details)
         gray = ""
@@ -157,24 +156,21 @@ class StoriesController < ApplicationController
           detail_split = detail.split(":")
           # If there is nothing in the second one that it isn't a set
           if(detail_split[1] != nil)
-            tags[detail_split[0]] = detail_split[1]
+            story_content[detail_split[0].downcase] = detail_split[1]
           else# we need to do something differnt
             # complete status
             if ((detail_split[0] <=> "Complete") == 0)
-              tags[detail_split[0]] = true
-              @result.complete = true
+              story_content['complete'] = true
             # language
             elsif count == 2
-              tags["Language"] = detail_split[0]
-              @result.language = true
+              story_content['language'] = detail_split[0]
             # Theme
             elsif count == 3
-              tags["Theme"] = detail_split[0].split("/")
-              @result.theme = detail_split[0].split("/")
+              story_content['theme'] = detail_split[0].split("/")
             # Main Characters
-            elsif count == 9
-              tags["Characters"] = detail_split[0].split(" & ")
-              @result.characters = detail_split[0].split(" & ")
+            elsif (count == 9 || (count == 8 && !(story_content['reviews'])))
+              # characters doesn't always work
+              story_content['characters'] = detail_split[0].split(" & ")
 
             end
 
@@ -185,17 +181,61 @@ class StoriesController < ApplicationController
         # get the summary
         node.xpath('./div').each do |summary_node|
            #@result["summary"] = summary_node.content
-           @result.summary = summary_node.content
+           story_content['summary'] = summary_node.content
         end
 
-        #@result["tags"] = tags
-        @result.save
-        #@results.push(@result)
+        generate_story(story_content)
       end
     end
 
 
 
   end
+
+  #
+  # If an author already exists just reutnr that author
+  # Otherwise create a new author
+  #
+  def generate_author(author_name, author_ff)
+    author = Author.find_by_name(author_name)
+    if !author # if it doesn't exist, add it
+      author = Author.new(params[:author])
+      author.name = author_name
+      author.ff_id = author_ff
+    end
+    author
+  end
+
+  def generate_story(story_content)
+    #
+    # Check to see if the story exists
+    #
+    story_item = Story.find_by_ff_id(story_content['ff_id'])
+    # check to see if a story with that FF id exists
+    if story_item
+      # update the story with the current data
+
+      # TODO need to upgrade words data type
+      # TODO converting published and updated to actual dates datatypes
+    else
+      story = Story.new(params[:story])
+      story.title   = story_content['title']
+      story.author  = story_content['author']
+      story.ff_id   = story_content['ff_id']
+      story.summary = story_content['summary']
+      story.complete = story_content['complete']
+      story.language = story_content['language']
+      story.theme   = story_content['theme']
+      story.characters = story_content['characters']
+      story.reviews = story_content['reviews']
+      story.chapters = story_content['chapters']
+      story.rating = story_content['rated']
+      story.published = story_content['published']
+      story.words = story_content['words']
+      story.updates = story_content['updated']
+      story.save
+    end
+  end
+
 
 end

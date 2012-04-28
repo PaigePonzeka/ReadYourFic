@@ -15,7 +15,7 @@
     %th Title
     %th Ff
     %th Author
-    %th Summary
+    -# %th Summary
     %th Rating
     %th Language
     %th Theme
@@ -34,8 +34,8 @@
     %tr
       %td= story.title
       %td= story.ff_id
-      %td= story.author_id
-      %td= story.summary
+      %td= story.author.name
+      -# %td= story.summary
       %td= story.rating
       %td= story.language
       %td= story.theme
