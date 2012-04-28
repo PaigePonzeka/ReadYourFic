@@ -3,7 +3,7 @@ class StoriesController < ApplicationController
   # GET /stories
   # GET /stories.json
   def index
-    generate_stories
+    #generate_stories
     @stories = Story.all(:order => "title ASC")
 
     respond_to do |format|
@@ -26,6 +26,7 @@ class StoriesController < ApplicationController
   # GET /stories/new
   # GET /stories/new.json
   def new
+    generate_stories
     @story = Story.new
 
     respond_to do |format|
