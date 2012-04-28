@@ -3,7 +3,7 @@ class StoriesController < ApplicationController
   # GET /stories
   # GET /stories.json
   def index
-    #generate_stories
+    generate_stories
     @stories = Story.all(:order => "title ASC")
 
     respond_to do |format|
@@ -180,6 +180,11 @@ class StoriesController < ApplicationController
               end
             end
 
+            # defaulting to false if complete isn't set
+            if story_content['complete'] != true
+              story_content['complete'] = false
+            end
+
 
           end
           count+=1
@@ -221,14 +226,13 @@ class StoriesController < ApplicationController
     # check to see if a story with that FF id exists
     if story_item
       # update the story with the current data
+      story_item.update_attributes(:title => story_content['title'], :author => story_content['author'], :ff_id => story_content['ff_id'], :summary => story_content['summary'], :complete => story_content['complete'], :language => story_content['language'], :theme =>  story_content['theme'], :characters =>  story_content['characters'], :reviews => s_to_num(story_content['reviews']), :chapters => s_to_num(story_content['chapters']), :rating => story_content['rated'],:published => story_content['published'], :words => s_to_num(story_content['words']), :updated => story_content['updated'] )
 
-      # TODO need to upgrade words data type
       # TODO converting published and updated to actual dates datatypes
       # TODO default completed to false
       # TODO using helpers to generate author and story url
       # TODO button to run the script
       # TODO button to clear the database
-      # TODO updating the database instead of replacing data
     else
       story = Story.new(params[:story])
       story.title   = story_content['title']
@@ -239,14 +243,26 @@ class StoriesController < ApplicationController
       story.language = story_content['language']
       story.theme   = story_content['theme']
       story.characters = story_content['characters']
-      story.reviews = story_content['reviews']
-      story.chapters = story_content['chapters']
+      story.reviews = s_to_num(story_content['reviews'])
+      story.chapters = s_to_num(story_content['reviews'])
       story.rating = story_content['rated']
       story.published = story_content['published']
-      story.words = story_content['words']
-      story.updates = story_content['updated']
+      story.words = s_to_num(story_content['reviews'])
+      story.updated = story_content['updated']
       story.save
     end
+  end
+
+  def s_to_num(s)
+    if s
+      s_num = s.gsub!(',','')
+      if s_num
+        s = s_num.to_i
+      else
+        s = s.to_i
+      end
+    end
+    s
   end
 
 
