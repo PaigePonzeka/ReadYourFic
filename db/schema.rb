@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120428021726) do
+ActiveRecord::Schema.define(:version => 20120428031416) do
 
   create_table "authors", :force => true do |t|
     t.integer  "ff_id"
@@ -30,13 +30,13 @@ ActiveRecord::Schema.define(:version => 20120428021726) do
     t.text     "theme"
     t.integer  "chapters"
     t.integer  "words"
-    t.integer  "reviews"
+    t.integer  "reviews",    :default => 0
     t.boolean  "complete"
     t.text     "characters"
     t.date     "published"
     t.date     "updated"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
   end
 
 end

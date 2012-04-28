@@ -156,7 +156,7 @@ class StoriesController < ApplicationController
           detail_split = detail.split(":")
           # If there is nothing in the second one that it isn't a set
           if(detail_split[1] != nil)
-            story_content[detail_split[0].downcase] = detail_split[1]
+            story_content[detail_split[0].downcase] = detail_split[1].strip
           else# we need to do something differnt
             # complete status
             if ((detail_split[0] <=> "Complete") == 0)
@@ -226,13 +226,15 @@ class StoriesController < ApplicationController
     # check to see if a story with that FF id exists
     if story_item
       # update the story with the current data
-      story_item.update_attributes(:title => story_content['title'], :author => story_content['author'], :ff_id => story_content['ff_id'], :summary => story_content['summary'], :complete => story_content['complete'], :language => story_content['language'], :theme =>  story_content['theme'], :characters =>  story_content['characters'], :reviews => s_to_num(story_content['reviews']), :chapters => s_to_num(story_content['chapters']), :rating => story_content['rated'],:published => story_content['published'], :words => s_to_num(story_content['words']), :updated => story_content['updated'] )
+      story_item.update_attributes(:title => story_content['published'], :author => story_content['author'], :ff_id => story_content['ff_id'], :summary => story_content['summary'], :complete => story_content['complete'], :language => story_content['language'], :theme =>  story_content['theme'], :characters =>  story_content['characters'], :reviews => s_to_num(story_content['reviews']), :chapters => s_to_num(story_content['chapters']), :rating => story_content['rated'],:published => s_to_date(story_content['published']), :words => s_to_num(story_content['words']), :updated =>  s_to_date(story_content['updated']) )
 
       # TODO converting published and updated to actual dates datatypes
       # TODO default completed to false
       # TODO using helpers to generate author and story url
       # TODO button to run the script
       # TODO button to clear the database
+      #-story_content['published']
+      #Date.strptime("31/01/2010", "%m/%d/%y")
     else
       story = Story.new(params[:story])
       story.title   = story_content['title']
@@ -246,9 +248,9 @@ class StoriesController < ApplicationController
       story.reviews = s_to_num(story_content['reviews'])
       story.chapters = s_to_num(story_content['reviews'])
       story.rating = story_content['rated']
-      story.published = story_content['published']
+      story.published = s_to_date(story_content['published'])
       story.words = s_to_num(story_content['reviews'])
-      story.updated = story_content['updated']
+      story.updated = s_to_date(story_content['updated'])
       story.save
     end
   end
@@ -261,6 +263,13 @@ class StoriesController < ApplicationController
       else
         s = s.to_i
       end
+    end
+    s
+  end
+
+  def s_to_date(s)
+    if s
+      s = Date.strptime(s, "%m-%d-%y")
     end
     s
   end
