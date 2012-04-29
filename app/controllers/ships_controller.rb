@@ -84,34 +84,78 @@ class ShipsController < ApplicationController
 
   def update_ships
     # A data structure to store the ships in
+
+    # Will and Emma-Wemma
+    # Quinn and Puck-Quick
+    # Quinn and Rachel-Quichel, Faberry, Achele
+    # Puck and Rachel-Puckleberry
+    # Finn and Rachel-Finchel
+    # Brittany and Santana-Brittana
+    # Artie and Mercedes-Artcedes
+    # Sam and Mercedes-Samcedes
+    # Puck and Finn-Pinn
+    # Finn and Kurt-Furt
+    # Kurt and Rachel: Hummelberry
+    # Kurt and Blaine-Klaine
+    # Blaine and Rachel-Blainchel
+    # Kurt and Karofsky-Kurtofsky
+    # Blaine and Karofsky-Blainofskyve
+    # Puck and Artie-Partie
+    # Artie and Tina-Artina
+    # Kurt and Puck-Puckurt
+    # Kurt and Will-Kill
+    # Jesse and Rachel-St. Berry
+    # Santana and Rachel-Pezberry
+    # Puck and Lauren-Pizes
+    # Mike and Tina-Tike
+    # Artie and BrittanyBartie
+    # Santana and Karofsky-Santofsky
+    # Sebastian and Blaine-Seblaine
+    # Rory and Sam-Sory
+    # Rory and Sugar-Flanamotta
     ships = [
             ["Brittana", ["Brittany P.", "Santana L."]],
-            ["Faberry", ["Quinn F.", "Rachel B."]]
+            ["Faberry", ["Quinn F.", "Rachel B."]],
+            ["Quick", ["Quinn F.", "Puck"]]
           ]
 
     ships.each do |ship_data|
+      ship = Ship.find_by_name(ship_data[0])
 
-      # ship
-      ship = Ship.new()
-      ship.name = ship_data[0]
-      ship.save
+      # Make sure the ship doesn't already exist
+      if !ship
+        # create a new ship
+        ship = Ship.new()
+        ship.name = ship_data[0]
+        ship.save
 
-      # characters
-      ship_characters = ship_data[1]
-      ship_characters.each do |ship_character|
-        character = Character.find_by_ff_name(ship_character)
-        if character
+        # characters
+        ship_characters = ship_data[1]
+        ship_characters.each do |ship_character|
+          character = generate_character(ship_character)
+
+          # save the relationship
           relationship = Relationship.new()
           relationship.ship = ship
           relationship.character = character
           relationship.save
         end
       end
-
     end
-
-
-
-
   end
+
+  #
+  # Find the character based on name, If a character doesn't exist create a new one
+  #
+  def generate_character(character_name)
+    character = Character.find_by_ff_name(character_name)
+    # check to see if the character exists
+    if !character
+      character = Character.new()
+      character.ff_name = character_name
+      character.save
+    end
+    character
+  end
+
 end
