@@ -1,4 +1,8 @@
 Glee::Application.routes.draw do
+  resources :relationships
+
+  resources :ships
+
   resources :protagnists
 
   resources :characters
