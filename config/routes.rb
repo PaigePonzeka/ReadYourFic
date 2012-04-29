@@ -1,4 +1,8 @@
 Glee::Application.routes.draw do
+  resources :protagnists
+
+  resources :characters
+
   resources :stories
 
   resources :authors

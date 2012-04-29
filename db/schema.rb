@@ -11,13 +11,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120428031416) do
+ActiveRecord::Schema.define(:version => 20120429015031) do
 
   create_table "authors", :force => true do |t|
     t.integer  "ff_id"
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "characters", :force => true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "ff_name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "protagnists", :force => true do |t|
+    t.integer  "story_id"
+    t.integer  "character_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "stories", :force => true do |t|
@@ -30,13 +45,13 @@ ActiveRecord::Schema.define(:version => 20120428031416) do
     t.text     "theme"
     t.integer  "chapters"
     t.integer  "words"
-    t.integer  "reviews",    :default => 0
+    t.integer  "reviews",        :default => 0
     t.boolean  "complete"
-    t.text     "characters"
+    t.text     "characters_old"
     t.date     "published"
     t.date     "updated"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
   end
 
 end

@@ -1,0 +1,15 @@
+%p#notice= notice
+
+%p
+  %b First name:
+  = @character.first_name
+%p
+  %b Last name:
+  = @character.last_name
+%p
+  %b Ff name:
+  = @character.ff_name
+
+= link_to 'Edit', edit_character_path(@character)
+\|
+= link_to 'Back', characters_path

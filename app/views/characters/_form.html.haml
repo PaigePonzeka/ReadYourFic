@@ -1,0 +1,19 @@
+= form_for @character do |f|
+  -if @character.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@character.errors.count, "error")} prohibited this character from being saved:"
+      %ul
+        - @character.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :first_name
+    = f.text_field :first_name
+  .field
+    = f.label :last_name
+    = f.text_field :last_name
+  .field
+    = f.label :ff_name
+    = f.text_field :ff_name
+  .actions
+    = f.submit 'Save'

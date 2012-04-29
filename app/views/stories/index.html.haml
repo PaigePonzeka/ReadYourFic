@@ -33,7 +33,9 @@
       %td= story.words
       %td= story.reviews
       %td= story.complete
-      %td= story.characters
+      %td
+        - story.characters.each do |character|
+          =character.ff_name
       %td= story.published
       %td= story.updated
       %td= link_to 'Show', story

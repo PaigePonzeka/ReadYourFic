@@ -1,10 +1,12 @@
+# For automatic update scheduling https://github.com/javan/whenever
+
 class StoriesController < ApplicationController
   helper_method :generate_stories
   # GET /stories
   # GET /stories.json
   def index
     #generate_stories
-    @stories = Story.all(:order => "title ASC")
+    @stories = Story.limit(20).all(:order => "title ASC")
 
     respond_to do |format|
       format.html # index.html.erb
@@ -88,26 +90,23 @@ class StoriesController < ApplicationController
   # Crawl FF.net to get the story details
   #
   def generate_stories
-    @results = []
-
-    # v
     require 'open-uri'
     # Open the first page
-    # doc = Nokogiri::HTML(open('http://www.fanfiction.net/tv/Glee/'))
-    #     # get the number of pages to scrape
-    #     pages = []
-    #     doc.xpath('//center/a').each do |page|
-    #       pages.push(page.content)
-    #       @pages = pages[pages.length-2].gsub!(',', '').to_i
-    #       #last page is the second to last guy
-    #     end
+     doc = Nokogiri::HTML(open('http://www.fanfiction.net/tv/Glee/'))
+        #get the number of pages to scrape
+        pages = []
+        doc.xpath('//center/a').each do |page|
+          pages.push(page.content)
+          @pages = pages[pages.length-2].gsub!(',', '').to_i
+          #last page is the second to last guy
+        end
 
     # hard coding pages for now to save some time
-    @pages = 3
+    @pages = 2
     # in a for loop from 1 - number of pages
     (1..@pages).each do |i|
-      #doc= Nokogiri::HTML(open("http://www.fanfiction.net/tv/Glee/3/0/0/1/0/0/0/0/0/#{i}/"))
-      doc= Nokogiri::HTML(open("/Users/paigep/Documents/scraper/test.html"))
+      doc= Nokogiri::HTML(open("http://www.fanfiction.net/tv/Glee/10/0/0/1/0/23374/0/0/0/#{i}/"))
+      #doc= Nokogiri::HTML(open("/Users/paigep/Documents/scraper/test.html"))
       doc.xpath('//div[@class = "z-list"]').each do |node|
 
         story_content = Hash.new
@@ -119,7 +118,6 @@ class StoriesController < ApplicationController
         end
          # the first link is the title
          story_content["title"] = links[0].content
-         #@result['story_url'] = links[0]['href']
 
          # get story id
          url_split = links[0]['href'].split('/')
@@ -203,6 +201,30 @@ class StoriesController < ApplicationController
 
   end
 
+
+  #
+  # Takes an array of characters, creates a new one if it doesn't exist \
+  # Then creates a new protagnist for the link
+  #
+  def generate_character(story_characters, story)
+      if story_characters
+        story_characters.each do |story_character|
+
+          character = Character.find_by_ff_name(story_character)
+          if !character # if the character doesn't exist add it
+            character = Character.new()
+            character.ff_name = story_character
+            character.save
+          end
+
+          # create a new protagnist link
+          protagnist = Protagnist.new()
+          protagnist.character = character
+          protagnist.story = story
+          protagnist.save
+        end
+      end
+  end
   #
   # If an author already exists just reutnr that author
   # Otherwise create a new author
@@ -225,11 +247,8 @@ class StoriesController < ApplicationController
     # check to see if a story with that FF id exists
     if story_item
       # update the story with the current data
-      story_item.update_attributes(:title => story_content['title'], :author => story_content['author'], :ff_id => story_content['ff_id'], :summary => story_content['summary'], :complete => story_content['complete'], :language => story_content['language'], :theme =>  story_content['theme'], :characters =>  story_content['characters'], :reviews => s_to_num(story_content['reviews']), :chapters => s_to_num(story_content['chapters']), :rating => story_content['rated'],:published => s_to_date(story_content['published']), :words => s_to_num(story_content['words']), :updated =>  s_to_date(story_content['updated']) )
+      story_item.update_attributes(:title => story_content['title'], :author => story_content['author'], :ff_id => story_content['ff_id'], :summary => story_content['summary'], :complete => story_content['complete'], :language => story_content['language'], :theme =>  story_content['theme'], :reviews => s_to_num(story_content['reviews']), :chapters => s_to_num(story_content['chapters']), :rating => story_content['rated'],:published => s_to_date(story_content['published']), :words => s_to_num(story_content['words']), :updated =>  s_to_date(story_content['updated']) )
 
-      # TODO using helpers to generate author and story url
-      # TODO button to run the script
-      # TODO button to clear the database
     else
       story = Story.new(params[:story])
       story.title   = story_content['title']
@@ -239,15 +258,16 @@ class StoriesController < ApplicationController
       story.complete = story_content['complete']
       story.language = story_content['language']
       story.theme   = story_content['theme']
-      story.characters = story_content['characters']
       story.reviews = s_to_num(story_content['reviews'])
-      story.chapters = s_to_num(story_content['reviews'])
+      story.chapters = s_to_num(story_content['chapters'])
       story.rating = story_content['rated']
       story.published = s_to_date(story_content['published'])
-      story.words = s_to_num(story_content['reviews'])
+      story.words = s_to_num(story_content['words'])
       story.updated = s_to_date(story_content['updated'])
       story.save
+      generate_character(story_content['characters'], story)
     end
+
   end
 
   def s_to_num(s)

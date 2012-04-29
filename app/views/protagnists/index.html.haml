@@ -1,0 +1,21 @@
+%h1 Listing protagnists
+
+%table
+  %tr
+    %th Story
+    %th Character
+    %th
+    %th
+    %th
+
+  - @protagnists.each do |protagnist|
+    %tr
+      %td= protagnist.story_id
+      %td= protagnist.character_id
+      %td= link_to 'Show', protagnist
+      %td= link_to 'Edit', edit_protagnist_path(protagnist)
+      %td= link_to 'Destroy', protagnist, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Protagnist', new_protagnist_path

@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Story:
+  = @protagnist.story_id
+%p
+  %b Character:
+  = @protagnist.character_id
+
+= link_to 'Edit', edit_protagnist_path(@protagnist)
+\|
+= link_to 'Back', protagnists_path
