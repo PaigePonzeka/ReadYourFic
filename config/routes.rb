@@ -14,6 +14,8 @@ Glee::Application.routes.draw do
   resources :authors
 
   get "home/index"
+
+  root :to => 'stories#index'
   #root :to => 'home/index'
   # The priority is based upon order of creation:
   # first created -> highest priority.
