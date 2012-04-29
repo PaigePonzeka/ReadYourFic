@@ -28,7 +28,7 @@ class StoriesController < ApplicationController
   # GET /stories/new
   # GET /stories/new.json
   def new
-    generate_stories
+    #generate_stories
     @story = Story.new
 
     respond_to do |format|
