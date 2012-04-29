@@ -13,6 +13,8 @@ gem "mysql2"
 # in production environments by default.
 group :assets do
   gem 'sass-rails',   '~> 3.2.0'
+  gem 'compass-rails'
+  gem 'color-schemer'
   gem 'coffee-rails', '~> 3.2.0'
   gem 'haml-rails'
   gem 'uglifier', '>= 1.0.3'
