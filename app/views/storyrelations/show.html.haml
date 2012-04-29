@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Story:
+  = @storyrelation.story_id
+%p
+  %b Ship:
+  = @storyrelation.ship_id
+
+= link_to 'Edit', edit_storyrelation_path(@storyrelation)
+\|
+= link_to 'Back', storyrelations_path

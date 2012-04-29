@@ -1,0 +1,16 @@
+= form_for @storyrelation do |f|
+  -if @storyrelation.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@storyrelation.errors.count, "error")} prohibited this storyrelation from being saved:"
+      %ul
+        - @storyrelation.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :story_id
+    = f.number_field :story_id
+  .field
+    = f.label :ship_id
+    = f.number_field :ship_id
+  .actions
+    = f.submit 'Save'

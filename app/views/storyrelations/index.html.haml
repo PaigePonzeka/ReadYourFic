@@ -1,0 +1,21 @@
+%h1 Listing storyrelations
+
+%table
+  %tr
+    %th Story
+    %th Ship
+    %th
+    %th
+    %th
+
+  - @storyrelations.each do |storyrelation|
+    %tr
+      %td= storyrelation.story_id
+      %td= storyrelation.ship_id
+      %td= link_to 'Show', storyrelation
+      %td= link_to 'Edit', edit_storyrelation_path(storyrelation)
+      %td= link_to 'Destroy', storyrelation, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Storyrelation', new_storyrelation_path
