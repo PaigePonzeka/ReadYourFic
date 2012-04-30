@@ -1,12 +1,14 @@
 # For automatic update scheduling https://github.com/javan/whenever
 
 class StoriesController < ApplicationController
-  helper_method :generate_stories
+  #helper_method :generate_stories
   # GET /stories
   # GET /stories.json
+  helper_method :sort_column, :sort_direction
   def index
     #generate_stories
-    @stories = Story.paginate(:page => params[:page],:per_page => 100).order('id DESC')
+    #@stories = Story.paginate(:page => params[:page],:per_page => 100).order(params[:sort])
+    @stories = Story.limit(50).order(sort_column + " " + sort_direction)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -28,7 +30,7 @@ class StoriesController < ApplicationController
   # GET /stories/new
   # GET /stories/new.json
   def new
-    #generate_stories
+    generate_stories
     @story = Story.new
 
     respond_to do |format|
@@ -105,7 +107,7 @@ class StoriesController < ApplicationController
     @pages = 2
     # in a for loop from 1 - number of pages
     (1..@pages).each do |i|
-      doc= Nokogiri::HTML(open("http://www.fanfiction.net/tv/Glee/10/0/0/1/0/23374/0/0/0/#{i}/"))
+      doc= Nokogiri::HTML(open("http://www.fanfiction.net/tv/Glee/10/0/0/1/0/0/0/0/0/#{i}/"))
       #doc= Nokogiri::HTML(open("/Users/paigep/Documents/scraper/test.html"))
       doc.xpath('//div[@class = "z-list"]').each do |node|
 
@@ -289,5 +291,15 @@ class StoriesController < ApplicationController
     s
   end
 
+  private
+
+  def sort_column
+    Story.column_names.include?(params[:sort]) ? params[:sort] : "title"
+  end
+
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+
+  end
 
 end

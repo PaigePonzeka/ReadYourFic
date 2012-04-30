@@ -1,18 +1,18 @@
 %h1 Track My Ship
 
 .stories-sort
-  = will_paginate @stories
+  = #will_paginate @stories
   %ul.stories-sort-order
     %li
-      %a(href="#") Reviews
+      = sortable "reviews"
     %li
-      %a(href="#") Published Date
+      = sortable "published"
     %li
-      %a(href="#") Updated Date
+      = sortable "updated"
     %li
-      %a(href="#") Chapters
+      = sortable "chapters"
     %li
-      %a(href="#") Words
+      = sortable "words"
 
 %ul.stories-container
   - @stories.each do |story|
@@ -25,15 +25,17 @@
         %p=story.summary
       .story-footer
         .story-footer-reviews
-          =story.reviews
+          = number_with_delimiter(story.reviews, :delimiter => ',')
         %ul.story-footer-tags
           - story.characters.each do |character|
             %li=character.ff_name
           - if story.theme
             -story.theme.each do |t|
               %li=t
+          %li= "#{story.chapters} Chapters"
+          %li= number_with_delimiter(story.words, :delimiter => ',')
 
-= will_paginate @stories
+= #will_paginate @stories
 
 
 
