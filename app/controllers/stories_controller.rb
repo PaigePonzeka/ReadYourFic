@@ -1,7 +1,7 @@
 # For automatic update scheduling https://github.com/javan/whenever
 
 class StoriesController < ApplicationController
-  #helper_method :generate_stories
+  helper_method :generate_stories
   # GET /stories
   # GET /stories.json
   helper_method :sort_column, :sort_direction
@@ -104,9 +104,8 @@ class StoriesController < ApplicationController
         end
 
     # hard coding pages for now to save some time
-    @pages = 2
     # in a for loop from 1 - number of pages
-    (1..@pages).each do |i|
+    (@pages..(@pages-100)).each do |i|
       doc= Nokogiri::HTML(open("http://www.fanfiction.net/tv/Glee/10/0/0/1/0/0/0/0/0/#{i}/"))
       #doc= Nokogiri::HTML(open("/Users/paigep/Documents/scraper/test.html"))
       doc.xpath('//div[@class = "z-list"]').each do |node|

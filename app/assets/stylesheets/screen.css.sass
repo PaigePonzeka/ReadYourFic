@@ -56,7 +56,6 @@ $wrapper-width: 960px
 #wrapper
   width: $wrapper-width
   margin: 30px auto 0 auto
-  background: #f0f
 
 
   h1
@@ -75,17 +74,28 @@ $wrapper-width: 960px
       li
         float: left
 
+        a
+
+          &.currents
+            text-decoration: none
+            font-weight: bold
+            color: #000
+
+            &.asc
+              background: #f0f
+
+            &.desc
+              background: #0f0
+
   .stories-container
     width: $wrapper-width - 40px
     margin: 10px auto 0 auto
-    background: #f00
 
     .story
       position: relative
       width: $wrapper-width - 60px
       padding: 10px
       margin: 0 auto
-      background: #0ff
 
       .story-title
         h4
