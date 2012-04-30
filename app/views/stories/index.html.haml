@@ -1,7 +1,7 @@
 %h1 Track My Ship
 
 .stories-sort
-  = #will_paginate @stories
+  = will_paginate @stories
   %ul.stories-sort-order
     %li
       = sortable "reviews"
@@ -35,7 +35,7 @@
           %li= "#{story.chapters} Chapters"
           %li= number_with_delimiter(story.words, :delimiter => ',')
 
-= #will_paginate @stories
+= will_paginate @stories
 
 
 

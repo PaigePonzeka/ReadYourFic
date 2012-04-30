@@ -6,9 +6,7 @@ class StoriesController < ApplicationController
   # GET /stories.json
   helper_method :sort_column, :sort_direction
   def index
-    #generate_stories
-    #@stories = Story.paginate(:page => params[:page],:per_page => 100).order(params[:sort])
-    @stories = Story.limit(50).order(sort_column + " " + sort_direction)
+    @stories = Story.paginate(:page => params[:page],:per_page => 100).order(sort_column + " " + sort_direction)
 
     respond_to do |format|
       format.html # index.html.erb
