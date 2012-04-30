@@ -1,0 +1,129 @@
+@import compass/reset
+@import partials/base
+@import 960/grid
+// This method will generate a range of classes to `@extend`
++modular-scale-classes(6)
+
+/*
+ * Default Styles
+ * ----------------------
+ */
+
+h1
+  @extend .ms-4
+
+h2
+  @extend .ms-3
+
+h3
+  @extend .ms-2
+
+h4
+  @extend .ms-1
+
+p
+  @extend .ms-0
+
+
+/*
+ * Header + Header Nav
+ * --------------------------
+ */
+
+nav
+  width: 100%
+  position: fixed
+  top: 0
+  left: 0
+  z-index: 10
+
+  .logo
+    float: left
+
+  >ul
+    +horizontal-list
+    >li
+      padding-top: 5px
+    li
+      +horizontal-list
+      margin: 0 5px
+
+    .social-links
+      float: right
+
+
+$wrapper-width: 960px
+#wrapper
+  width: $wrapper-width
+  margin: 30px auto 0 auto
+  background: #f0f
+
+
+  h1
+    padding: 10px 0
+/*
+ * Stories
+ * ----------------------------
+ */
+#stories
+  .stories-sort
+    width: $wrapper-width - 40px
+    margin: 10px auto 0 auto
+
+    ul.stories-sort-order
+      +horizontal-list
+      li
+        float: left
+
+  .stories-container
+    width: $wrapper-width - 40px
+    margin: 10px auto 0 auto
+    background: #f00
+
+    .story
+      position: relative
+      width: $wrapper-width - 60px
+      padding: 10px
+      margin: 0 auto
+      background: #0ff
+
+      .story-title
+        h4
+          span
+            margin-left: 10px
+      .story-summary
+        margin-bottom: 10px
+        p
+      .story-footer
+        position: absolute
+        bottom: 0
+        left: 0
+        padding-top: 5px
+        .story-footer-reviews
+          float: left
+          margin: 0 10px
+        ul.story-footer-tags
+          float: left
+          +horizontal-list
+          li
+            border: 1px solid #999
+            margin: 0 2px
+
+
+
+/*
+ * Footer + Footer Nav
+ * -----------------------------
+ */
+footer
+  width: 100%
+  position: fixed
+  bottom: 0
+  left: 0
+  z-index: 10
+
+  ul
+    li
+      float: left
+      margin: 0 10px
+

@@ -11,6 +11,7 @@ end
 
 module Glee
   class Application < Rails::Application
+    #config.sass.load_paths << "#{Gem.loaded_specs['compass'].full_gem_path}/frameworks/compass/stylesheets"
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -35,10 +36,10 @@ module Glee
 
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
-
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
-
+    #config.assets.compile = true
+    #config.assets.digest = true
     # Use SQL instead of Active Record's schema dumper when creating the database.
     # This is necessary if your schema can't be completely dumped by the schema dumper,
     # like if you have constraints or database-specific column types
@@ -52,6 +53,7 @@ module Glee
 
     # Enable the asset pipeline
     config.assets.enabled = true
+    config.assets.compile = true
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'

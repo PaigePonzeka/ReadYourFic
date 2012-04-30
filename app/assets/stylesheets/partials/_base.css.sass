@@ -1,0 +1,24 @@
+@import partials/theme
+@import modular-scale
+@import compass/typography/lists/horizontal-list
+
+// VARIABLES ------------------------------------------------------------------
+// Layout
+$base-size: 16px
+$ratio: $minor-third
+
+
+// MIXINS ---------------------------------------------------------------------
+=ms-ln($value, $base: $base-size, $ratio: $ratio)
+  @extend .ms-#{$value}
+  line-height: ms($value, $base-size, $ratio) * ($ratio * $ratio * $ratio)
+
+=clearfix
+  zoom: 1
+  &:after
+    content: "."
+    display: block
+    height: 0
+    clear: both
+    font-size: 0
+    visibility: hidden

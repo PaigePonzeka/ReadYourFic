@@ -1,6 +1,42 @@
-%h1 Listing stories
+%h1 Track My Ship
 
-%table
+.stories-sort
+
+  %ul.stories-sort-order
+    %li
+      %a(href="#") Reviews
+    %li
+      %a(href="#") Published Date
+    %li
+      %a(href="#") Updated Date
+    %li
+      %a(href="#") Chapters
+    %li
+      %a(href="#") Words
+
+%ul.stories-container
+  - @stories.each do |story|
+    %li.story
+      .story-title
+        %h4
+          =story.title
+          %span= story.author.name
+      .story-summary
+        %p=story.summary
+      .story-footer
+        .story-footer-reviews
+          =story.reviews
+        %ul.story-footer-tags
+          - story.characters.each do |character|
+            %li=character.ff_name
+          - if story.theme
+            -story.theme.each do |t|
+              %li=t
+
+
+
+
+-#%table
   %tr
     %th Title
     %th Ff
@@ -44,4 +80,4 @@
 
 %br
 
-= link_to 'New Story', new_story_path
+=# link_to 'New Story', new_story_path

@@ -1,6 +1,37 @@
 %html
-%head
-  %title
+  %head
+    %title Track My Ship
+    = stylesheet_link_tag "application"
+    = #javascript_include_tag "application"
 
-%body
-  = yield
+  %body{:id => "#{controller.controller_name}"}
+    %nav
+      .logo Track Your Ship
+      %ul
+        %li
+          %a(href="#") How It Works
+        %li
+          %a(href="#") Follow Us
+        %li.social-links
+          Share:
+          %ul
+            %li
+              %a(href="#") Facebook
+            %li
+              %a(href="#") Tumblr
+            %li
+              %a(href="#") Twitter
+            %li
+              %a(href="#") Pinterest
+
+    #wrapper
+      = yield
+    %footer
+      %ul
+        %li
+          %a(href="#") Ask Us
+        %li
+          %a(href="#") Contact Us
+        %li
+          %span
+            Copyright Paige Ponzeka 2012
