@@ -14,7 +14,6 @@ class AuthorsController < ApplicationController
   # GET /authors/1.json
   def show
     @author = Author.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @author }
@@ -80,4 +79,6 @@ class AuthorsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+
 end

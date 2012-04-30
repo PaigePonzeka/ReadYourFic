@@ -8,7 +8,8 @@
  * Default Styles
  * ----------------------
  */
-
+body
+  font-family: Arial, sans-serif
 h1
   @extend .ms-4
 
@@ -66,7 +67,7 @@ $wrapper-width: 960px
  */
 #stories
   .stories-sort
-    width: $wrapper-width - 40px
+    width: $wrapper-width - 75px
     margin: 10px auto 0 auto
 
     ul.stories-sort-order
@@ -95,15 +96,19 @@ $wrapper-width: 960px
       position: relative
       width: $wrapper-width - 60px
       padding: 10px
-      margin: 0 auto
+      margin: 5px auto
 
       .story-title
         h4
+          font-weight: 600
           span
+            font-weight: normal
             margin-left: 10px
+
       .story-summary
-        margin-bottom: 10px
+        margin: 5px 0 10px 0
         p
+          line-height: 18px
       .story-footer
         position: absolute
         bottom: 0

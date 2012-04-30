@@ -1,7 +1,7 @@
-%h1 Track My Ship
+%h1 Track My Ship: Stories
 
 .stories-sort
-  = will_paginate @stories
+
   %ul.stories-sort-order
     %li
       = sortable "reviews"
@@ -13,6 +13,7 @@
       = sortable "chapters"
     %li
       = sortable "words"
+  = will_paginate @stories
 
 %ul.stories-container
   - @stories.each do |story|
@@ -20,7 +21,7 @@
       .story-title
         %h4
           =story.title
-          %span= story.author.name
+          %span= link_to story.author.name, author_path(story.author)
       .story-summary
         %p=story.summary
       .story-footer
