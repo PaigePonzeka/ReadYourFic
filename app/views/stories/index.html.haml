@@ -1,7 +1,7 @@
 %h1 Track My Ship
 
 .stories-sort
-
+  = will_paginate @stories
   %ul.stories-sort-order
     %li
       %a(href="#") Reviews
@@ -32,6 +32,8 @@
           - if story.theme
             -story.theme.each do |t|
               %li=t
+
+= will_paginate @stories
 
 
 

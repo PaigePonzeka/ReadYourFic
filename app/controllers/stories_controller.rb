@@ -6,7 +6,7 @@ class StoriesController < ApplicationController
   # GET /stories.json
   def index
     #generate_stories
-    @stories = Story.limit(20).all(:order => "title ASC")
+    @stories = Story.paginate(:page => params[:page],:per_page => 100).order('id DESC')
 
     respond_to do |format|
       format.html # index.html.erb
