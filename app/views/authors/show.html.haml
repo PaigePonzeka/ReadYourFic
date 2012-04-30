@@ -2,30 +2,36 @@
 
 %h1= @author.name
 
-%ul
-  %li= link_to "View #{@author.name} on FF.net", author_ff_path(@author.id)
-  %li Subscribe to Author on FF.net
+.profile
+  %ul.profile_links
+    %li= link_to "View #{@author.name} on FF.net", author_ff_path(@author.id)
+    %li Subscribe to Author on FF.net
 
-%h3 Tag Cloud
-- # TODO a tag cloud of ships, themes, characters sized by popularity in story
+  .column-2
+    .stats
+      %h3= "#{@author.name}'s Stats"
+      %ul
+        %li
+          Stories Written:
+          = @author.stories.count
+        %li
+          Reviews Received:
+          = total_reviews
+        %li
+          Words Written
+          = total_words
+        %li
+          Chapters Written:
+          = total_chapters
 
-%h3= "#{@author.name}'s Stats"
-%ul
-  %li
-    Stories Written:
-    = @author.stories.count
-  %li
-    Reviews Received:
-    = total_reviews
-  %li
-    Words Written
-    = total_words
-  %li
-    Chapters Written:
-    = total_chapters
+    .stories
+      %h3= "#{@author.name}'s Stories"
+      %span (Click to Read story on FF.net)
+      %ol
+        -@author.stories.each do |story|
+          %li= link_to story.title, story_ff_path(story.ff_id)
 
-%h3= "#{@author.name}'s Stories"
-%span (Click to Read story on FF.net)
-%ol
-  -@author.stories.each do |story|
-    %li= link_to story.title, story_ff_path(story.ff_id)
+  .column-2.tag-cloud
+    %h3 Tag Cloud
+    - # TODO a tag cloud of ships, themes, characters sized by popularity in story
+    - # TODO Author ID or name in url
