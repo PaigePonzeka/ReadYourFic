@@ -26,4 +26,13 @@ module ApplicationHelper
     characters_array
   end
 
+  def themes_array
+    themes = Theme.order("name ASC").find(:all)
+    themes_array = Array.new
+    themes.each do |theme|
+      themes_array.push([theme.name, theme.id])
+    end
+    themes_array
+  end
+
 end
