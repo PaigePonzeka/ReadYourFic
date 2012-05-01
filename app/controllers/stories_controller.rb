@@ -1,10 +1,13 @@
 # For automatic update scheduling https://github.com/javan/whenever
 # TODO remove themes column from stories
+# TODO updating many-to-many tables connected to stories
+
 class StoriesController < ApplicationController
   helper_method :generate_stories
   # GET /stories
   # GET /stories.json
   helper_method :sort_column, :sort_direction
+
   def index
     @stories = Story.search(params[:search]).order(sort_column + " " + sort_direction).paginate(:page => params[:page],:per_page => 100)
 

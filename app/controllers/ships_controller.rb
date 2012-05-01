@@ -85,38 +85,33 @@ class ShipsController < ApplicationController
   def update_ships
     # A data structure to store the ships in
 
-    # Will and Emma-Wemma
-    # Quinn and Puck-Quick
-    # Quinn and Rachel-Quichel, Faberry, Achele
-    # Puck and Rachel-Puckleberry
-    # Finn and Rachel-Finchel
-    # Brittany and Santana-Brittana
-    # Artie and Mercedes-Artcedes
-    # Sam and Mercedes-Samcedes
-    # Puck and Finn-Pinn
-    # Finn and Kurt-Furt
-    # Kurt and Rachel: Hummelberry
-    # Kurt and Blaine-Klaine
-    # Blaine and Rachel-Blainchel
-    # Kurt and Karofsky-Kurtofsky
-    # Blaine and Karofsky-Blainofskyve
-    # Puck and Artie-Partie
-    # Artie and Tina-Artina
-    # Kurt and Puck-Puckurt
-    # Kurt and Will-Kill
-    # Jesse and Rachel-St. Berry
-    # Santana and Rachel-Pezberry
-    # Puck and Lauren-Pizes
-    # Mike and Tina-Tike
-    # Artie and BrittanyBartie
-    # Santana and Karofsky-Santofsky
-    # Sebastian and Blaine-Seblaine
-    # Rory and Sam-Sory
-    # Rory and Sugar-Flanamotta
     ships = [
             ["Brittana", ["Brittany P.", "Santana L."]],
             ["Faberry", ["Quinn F.", "Rachel B."]],
-            ["Quick", ["Quinn F.", "Puck"]]
+            ["Flanamotta", ["Rory F.", "Sugar"]],
+            ["Sory", ["Rory F.", "Sam E."]],
+            ["Seblaine", ["Sebastian S.", "Blaine A."]],
+            ["Santofsky", ["D. Karofsky", "Santana L."]],
+            ["Bartie", ["Brittany S.", "Artie A."]],
+            ["Tike", ["Mike C.", "Tina C."]],
+            ["Pezberry", ["Santana L.", "Rachel B."]],
+            ["Pizes", ["Lauren Z.", "Puck"]],
+            ["St. Berry", ["Jesse sJ.", "Rachel B."]],
+            ["Kill", ["Kurt H.", "Will S."]],
+            ["Puckurt", ["Kurt H.", "Puck"]],
+            ["Artina", ["Tina C.", "Artie A."]],
+            ["Partie", ["Puck.", "Artie A."]],
+            ["Blainofskyve", ["Blaine A.", "D. Karofsky"]],
+            ["Klaine", ["Kurt H.", "Blaine A."]],
+            ["Hummelberry", ["Kurt H.", "Rachel B."]],
+            ["Furt", ["Kurt H.", "D. Finn H."]],
+            ["Pinn", ["Puck", "Finn H."]],
+            ["Samcedes", ["Sam E.", "Mercedes J."]],
+            ["Artcedes", ["Artie A.", "Mercedes J."]],
+            ["Finchel", ["Finn H.", "Rachel B."]],
+            ["Puckleberry", ["Puck", "Rachel B."]],
+            ["Faberry", ["Quinn F.", "Rachel B."]],
+            ["Wemma", ["Will S.", "Emma P."]]
           ]
 
     ships.each do |ship_data|
