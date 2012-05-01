@@ -244,6 +244,39 @@ class StoriesController < ApplicationController
         end
       end
   end
+
+  #
+  # For every theme in the story theme array generate a new
+  # theme connection
+  #
+  def generate_story_themes(themes, story)
+    if themes
+      themes.each do |theme|
+        theme_obj = generate_theme(theme)
+        story_theme = Storytheme.new()
+        story_theme.story = story
+        story_theme.theme = theme_obj
+        story_theme.save
+      end
+    end
+  end
+
+
+  #
+  # If a theme already exists return the connection
+  # Otherwise create a new theme
+  #
+  def generate_theme(theme_name)
+    theme = Theme.find_by_name(theme_name)
+    if !theme #theme doesn't exist, create a new one
+      theme = Theme.new()
+      theme.name = theme_name
+      theme.save
+    end
+    theme
+  end
+
+
   #
   # If an author already exists just reutnr that author
   # Otherwise create a new author
@@ -276,7 +309,7 @@ class StoriesController < ApplicationController
       story.summary = story_content['summary']
       story.complete = story_content['complete']
       story.language = story_content['language']
-      story.theme   = story_content['theme']
+      #story.theme   = story_content['theme']
       story.reviews = s_to_num(story_content['reviews'])
       story.chapters = s_to_num(story_content['chapters'])
       story.rating = story_content['rated']
@@ -285,6 +318,7 @@ class StoriesController < ApplicationController
       story.updated = s_to_date(story_content['updated'])
       story.save
       generate_character(story_content['characters'], story)
+      generate_story_themes(story_content['theme'], story)
     end
 
   end
