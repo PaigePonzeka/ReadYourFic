@@ -6,7 +6,7 @@ class StoriesController < ApplicationController
   # GET /stories.json
   helper_method :sort_column, :sort_direction
   def index
-    @stories = Story.paginate(:page => params[:page],:per_page => 100).order(sort_column + " " + sort_direction)
+    @stories = Story.search(params[:search]).order(sort_column + " " + sort_direction).paginate(:page => params[:page],:per_page => 100)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -91,21 +91,32 @@ class StoriesController < ApplicationController
   #
   def generate_stories
     require 'open-uri'
-    # Open the first page
-     doc = Nokogiri::HTML(open('http://www.fanfiction.net/tv/Glee/'))
-        #get the number of pages to scrape
-        pages = []
-        doc.xpath('//center/a').each do |page|
-          pages.push(page.content)
-          @pages = pages[pages.length-2].gsub!(',', '').to_i
-          #last page is the second to last guy
-        end
+    debug = true
+    if !debug
+      # Open the first page
+       doc = Nokogiri::HTML(open('http://www.fanfiction.net/tv/Glee/'))
+          #get the number of pages to scrape
+          pages = []
+          doc.xpath('//center/a').each do |page|
+            pages.push(page.content)
+            @pages = pages[pages.length-2].gsub!(',', '').to_i
+            #last page is the second to last guy
+          end
+    end
 
     # hard coding pages for now to save some time
     # in a for loop from 1 - number of pages
-    (@pages..(@pages-100)).each do |i|
-      doc= Nokogiri::HTML(open("http://www.fanfiction.net/tv/Glee/10/0/0/1/0/0/0/0/0/#{i}/"))
-      #doc= Nokogiri::HTML(open("/Users/paigep/Documents/scraper/test.html"))
+    if debug
+      @pages = 4
+    end
+
+    (4..@pages).each do |i|
+      if debug
+        doc= Nokogiri::HTML(open("/Users/paigep/Documents/scraper/test#{i}.html"))
+      else
+        doc= Nokogiri::HTML(open("http://www.fanfiction.net/tv/Glee/10/0/0/1/0/0/0/0/0/#{i}/"))
+      end
+
       doc.xpath('//div[@class = "z-list"]').each do |node|
 
         story_content = Hash.new
@@ -171,11 +182,20 @@ class StoriesController < ApplicationController
             # Main Characters
             if (count == details.length)
               if (details[details.length-1] <=> "Complete") != 0
-                # story isn't complete characters are the last one
-                story_content['characters'] = detail_split[0].split(" & ")
+                # story isn't complete characters are the last one (or published)
+                detail_split = detail.split(":")
+                if !detail_split[1] # Not published there are no characters
+                  story_content['characters'] = detail_split[0].split(" & ")
+                end
               else
                 # story is complete characters are the second to last one
-                story_content['characters'] = details[details.length-2].split(" & ")
+                detail_split = details[details.length-2].split(":")
+                if !detail_split[1] # Not published there are no characters
+                  story_content['characters'] = details[details.length-2].split(" & ")
+                end
+
+
+
               end
             end
 

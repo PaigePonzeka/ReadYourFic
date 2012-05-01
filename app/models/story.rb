@@ -8,7 +8,12 @@ class Story < ActiveRecord::Base
   serialize :characters_old
   serialize :theme
 
-
-
+  def self.search(search)
+    if search
+      where('title LIKE ?', "%#{search}%")
+    else
+      scoped
+    end
+  end
 
 end
