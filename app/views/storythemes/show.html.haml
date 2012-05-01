@@ -1,0 +1,12 @@
+%p#notice= notice
+
+%p
+  %b Story:
+  = @storytheme.story_id
+%p
+  %b Theme:
+  = @storytheme.theme_id
+
+= link_to 'Edit', edit_storytheme_path(@storytheme)
+\|
+= link_to 'Back', storythemes_path

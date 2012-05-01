@@ -1,0 +1,21 @@
+%h1 Listing storythemes
+
+%table
+  %tr
+    %th Story
+    %th Theme
+    %th
+    %th
+    %th
+
+  - @storythemes.each do |storytheme|
+    %tr
+      %td= storytheme.story_id
+      %td= storytheme.theme_id
+      %td= link_to 'Show', storytheme
+      %td= link_to 'Edit', edit_storytheme_path(storytheme)
+      %td= link_to 'Destroy', storytheme, :confirm => 'Are you sure?', :method => :delete
+
+%br
+
+= link_to 'New Storytheme', new_storytheme_path

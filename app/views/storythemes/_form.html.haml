@@ -1,0 +1,16 @@
+= form_for @storytheme do |f|
+  -if @storytheme.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@storytheme.errors.count, "error")} prohibited this storytheme from being saved:"
+      %ul
+        - @storytheme.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :story_id
+    = f.number_field :story_id
+  .field
+    = f.label :theme_id
+    = f.number_field :theme_id
+  .actions
+    = f.submit 'Save'
