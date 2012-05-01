@@ -8,7 +8,7 @@ module StoriesHelper
   end
 
   def multiselect_tag(array)
-    select_tag(:city_id, options_for_select(array), :multiple => true)
+    select_tag(:ships, options_for_select(array), :multiple => true)
   end
 
 end

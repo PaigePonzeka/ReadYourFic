@@ -310,6 +310,7 @@ class StoriesController < ApplicationController
 
   private
 
+
   def sort_column
     Story.column_names.include?(params[:sort]) ? params[:sort] : "title"
   end

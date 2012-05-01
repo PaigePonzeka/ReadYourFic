@@ -4,11 +4,13 @@
 
   = form_tag stories_path, :method => 'get', :id => "stories_search" do
     = text_field_tag :search, params[:search]
+    = multiselect_tag(characters_array)
     = submit_tag "Search", :name => nil
 
 
-  = multiselect_tag(ships_array)
-  = multiselect_tag(characters_array)
+
+  = #multiselect_tag(ships_array)
+  = #multiselect_tag(characters_array)
   %ul.stories-sort-order
     %li
       = sortable "reviews"
