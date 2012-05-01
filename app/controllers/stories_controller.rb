@@ -1,5 +1,5 @@
 # For automatic update scheduling https://github.com/javan/whenever
-
+# TODO remove themes column from stories
 class StoriesController < ApplicationController
   helper_method :generate_stories
   # GET /stories
@@ -299,7 +299,7 @@ class StoriesController < ApplicationController
     # check to see if a story with that FF id exists
     if story_item
       # update the story with the current data
-      story_item.update_attributes(:title => story_content['title'], :author => story_content['author'], :ff_id => story_content['ff_id'], :summary => story_content['summary'], :complete => story_content['complete'], :language => story_content['language'], :theme =>  story_content['theme'], :reviews => s_to_num(story_content['reviews']), :chapters => s_to_num(story_content['chapters']), :rating => story_content['rated'],:published => s_to_date(story_content['published']), :words => s_to_num(story_content['words']), :updated =>  s_to_date(story_content['updated']) )
+      story_item.update_attributes(:title => story_content['title'], :author => story_content['author'], :ff_id => story_content['ff_id'], :summary => story_content['summary'], :complete => story_content['complete'], :language => story_content['language'], :reviews => s_to_num(story_content['reviews']), :chapters => s_to_num(story_content['chapters']), :rating => story_content['rated'],:published => s_to_date(story_content['published']), :words => s_to_num(story_content['words']), :updated =>  s_to_date(story_content['updated']) )
 
     else
       story = Story.new(params[:story])
