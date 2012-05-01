@@ -5,6 +5,7 @@
   = form_tag stories_path, :method => 'get', :id => "stories_search" do
     = text_field_tag :search, params[:search]
     = multiselect_tag(characters_array)
+    = multiselect_tag(ships_array)
     = submit_tag "Search", :name => nil
 
 

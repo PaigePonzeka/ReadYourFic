@@ -9,7 +9,7 @@ module ApplicationHelper
   end
 
   def ships_array
-    ships = Ship.find(:all)
+    ships = Ship.order("name ASC").find(:all)
     ships_array = Array.new
     ships.each do |ship|
       ships_array.push([ship.name, ship.id])
@@ -18,7 +18,7 @@ module ApplicationHelper
   end
 
   def characters_array
-    characters = Character.find(:all)
+    characters = Character.order("ff_name ASC").find(:all)
     characters_array = Array.new
     characters.each do |character|
       characters_array.push([character.ff_name, character.id])
