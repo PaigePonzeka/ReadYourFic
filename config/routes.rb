@@ -1,4 +1,6 @@
 Glee::Application.routes.draw do
+  resources :story_ships
+
   resources :storythemes
 
   resources :themes
