@@ -100,7 +100,7 @@ class ShipsController < ApplicationController
             ["Kill", ["Kurt H.", "Will S."]],
             ["Puckurt", ["Kurt H.", "Puck"]],
             ["Artina", ["Tina C.", "Artie A."]],
-            ["Partie", ["Puck.", "Artie A."]],
+            ["Partie", ["Puck", "Artie A."]],
             ["Blainofskyve", ["Blaine A.", "D. Karofsky"]],
             ["Klaine", ["Kurt H.", "Blaine A."]],
             ["Hummelberry", ["Kurt H.", "Rachel B."]],
