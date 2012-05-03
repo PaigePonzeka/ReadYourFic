@@ -9,7 +9,7 @@ class StoriesController < ApplicationController
   helper_method :sort_column, :sort_direction
 
   def index
-    @stories = Story.search(params[:search]).order(sort_column + " " + sort_direction).paginate(:page => params[:page],:per_page => 100)
+    @stories = Story.joins(:characters).search(params[:search], params[:character]).order(sort_column + " " + sort_direction).paginate(:page => params[:page],:per_page => 100)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -196,9 +196,6 @@ class StoriesController < ApplicationController
                 if !detail_split[1] # Not published there are no characters
                   story_content['characters'] = details[details.length-2].split(" & ")
                 end
-
-
-
               end
             end
 
@@ -245,6 +242,18 @@ class StoriesController < ApplicationController
           protagnist.story = story
           protagnist.save
         end
+      end
+      # If there are two characters, assume a ship, generate a ship relation
+      if (story_characters.count == 2)
+        characterA = Character.find_by_ff_name(story_character[0])
+        characterB = Character.find_by_ff_name(story_character[1])
+        relationships_of_a = Relationship.find_by_character_id(characterA.id)
+        relationships_of_b = Relationship.find_by_character_id(characterB.id)
+
+        # compare relationships_of_a to relationships_of_b to find if there is a matching ship_id
+          # if there is a matching ship_id save that into ship_id
+          # TODO there's got to be a faster way to do this
+
       end
   end
 

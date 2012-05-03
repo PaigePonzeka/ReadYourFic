@@ -4,9 +4,9 @@
 
   = form_tag stories_path, :method => 'get', :id => "stories_search" do
     = text_field_tag :search, params[:search]
-    = multiselect_tag(characters_array)
-    = multiselect_tag(ships_array)
-    = multiselect_tag(themes_array)
+    =select_tag(:character, options_for_select(characters_array), :multiple => true)
+    =select_tag(:ships, options_for_select(ships_array), :multiple => true)
+    =select_tag(:themes, options_for_select(themes_array), :multiple => true)
     = submit_tag "Filter", :name => nil
 
 
