@@ -3,16 +3,12 @@
 .stories-sort
 
   = form_tag stories_path, :method => 'get', :id => "stories_search" do
-    = text_field_tag :search, params[:search]
-    =select_tag(:character, options_for_select(characters_array), :multiple => true)
+    = text_field_tag :search, params[:search], :placeholder => "Enter Title"
+    =select_tag(:character, options_for_select(characters_array), :multiple => true, :class => 'chzn-select')
     =#select_tag(:ships, options_for_select(ships_array), :multiple => true)
-    =select_tag(:themes, options_for_select(themes_array), :multiple => true)
+    =select_tag(:themes, options_for_select(themes_array), :multiple => true, :class => 'chzn-select')
     = submit_tag "Filter", :name => nil
 
-
-
-  = #multiselect_tag(ships_array)
-  = #multiselect_tag(characters_array)
   %ul.stories-sort-order
     %li
       = sortable "reviews"

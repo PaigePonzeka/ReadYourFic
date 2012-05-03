@@ -1,8 +1,10 @@
 %html
   %head
     %title Track My Ship
-    = stylesheet_link_tag "application"
-    = #javascript_include_tag "application"
+    = stylesheet_link_tag "application.css"
+    = javascript_include_tag "jquery-1.7.2.min.js"
+    = javascript_include_tag "chosen.jquery.min.js"
+    = javascript_include_tag "stories.js"
 
   %body{:id => "#{controller.controller_name}"}
     %nav
