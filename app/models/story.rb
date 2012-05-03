@@ -14,26 +14,63 @@ class Story < ActiveRecord::Base
 
 
 
+  # Search for empty search options
+  #
+  #
+  def self.search(search, characters, themes)
 
-  def self.search(search, characters)
-    if search
-      where("#{character_query(characters)}")
-    # elsif character
-    #       where("#{character_query(characters)}")
+    # if search != nil
+    #       search_string = "title like \"#{search}\""
+    #     end
+    if characters
+      character_string = "#{make_query(characters, "characters.id")}"
+    end
+
+    if themes
+      theme_string = "#{make_query(themes, "themes.id")}"
+    end
+
+    # if ships
+    #      ship_string = "#{make_query(ships, "ships.id")}"
+    #    end
+
+    # if character_string && theme_string && ship_string
+    #       where("#{character_string} AND #{theme_string} AND #{ship_string}" )
+    if character_string && theme_string
+      where("#{character_string} AND #{theme_string}" )
+    # elsif character_string && ship_string
+    #       where("#{character_string} AND #{ship_string}" )
+    #     elsif theme_string && ship_string
+    #       where("#{theme_string} AND #{ship_string}" )
+    elsif character_string
+      where(character_string)
+    elsif theme_string
+      where(theme_string)
+    # elsif ship_string
+    #       where(ship_string)
     else
       scoped
     end
 
   end
 
-  # TODO add ors for additional characters
-  def self.character_query(characters)
-    query = "("
-    characters.each do |character|
-      query += "characters.id = #{character}"
-    end
-    query +=")"
-    query
+  #
+  # Generating the sql to connect an array
+  # of objects through ORs for searches through the database
+  #
+  def self.make_query(objects, table_column)
+     query = "("
+      total = objects.count
+      count = 1
+      objects.each do |object|
+        query += "#{table_column} = #{object}"
+        if total > 0 && count != total
+          query += " OR "
+        end
+        count+=1
+      end
+      query +=")"
+      query
   end
 
 
