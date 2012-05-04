@@ -4,7 +4,15 @@ module StoriesHelper
     title ||= column.titleize
     css_class = column == sort_column ? "currents #{sort_direction}" :nil
     direction = column == sort_column && sort_direction == "asc" ? "desc" : "asc"
-    link_to title, {:sort => column, :direction => direction}, {:class => css_class}
+
+    # TODO need to know when to use apersand or a question mark...
+    current_url = request.url
+
+    if current_url.split('?')[1] #then there is already parameters just append it
+      link_to title, "#{current_url}&direction=#{direction}&sort=#{column}", {:class => css_class}
+    else # there aren't parameters
+      link_to title, "#{current_url}?direction=#{direction}&sort=#{column}", {:class => css_class}
+    end
   end
 
   def multiselect_tag(array)
