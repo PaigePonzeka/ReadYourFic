@@ -37,10 +37,6 @@ intializeFilters= ->
 
   # get the parameters from the url
   url_vars = getUrlVars()
-  console.log url_vars
-  console.log url_vars['search']
-  console.log url_vars['character%5B%5D']
-  console.log url_vars['themes%5B%5D']
 
   # set the content for the search bar
   if url_vars['search']

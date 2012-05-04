@@ -31,10 +31,6 @@
   intializeFilters = function() {
     var character, characters, theme, themes, url_vars, _results;
     url_vars = getUrlVars();
-    console.log(url_vars);
-    console.log(url_vars['search']);
-    console.log(url_vars['character%5B%5D']);
-    console.log(url_vars['themes%5B%5D']);
     if (url_vars['search']) $('#search').val(url_vars['search']);
     characters = url_vars['characters'];
     if (characters.length > 0) {
