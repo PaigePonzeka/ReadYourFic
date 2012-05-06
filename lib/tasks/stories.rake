@@ -170,7 +170,7 @@ def generate_characters(story_characters, story)
     if story_characters
       story_characters.each do |story_character|
 
-        generate_character(story_character)
+        character =generate_character(story_character)
         # create a new protagnist link
         protagnist = Protagnist.new()
         protagnist.character = character
