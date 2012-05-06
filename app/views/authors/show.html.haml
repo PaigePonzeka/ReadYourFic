@@ -33,5 +33,18 @@
 
   .column-2.tag-cloud
     %h3 Tag Cloud
-    - # TODO a tag cloud of ships, themes, characters sized by popularity in story
-    - # TODO Author ID or name in url
+    - # need to keep count of each tag and assign it
+    - # classes respectively
+    - # can do a has like story['theme-name'] = count
+    - # loop through twice?
+    - # we can get key names and counts at the same time
+    - # need to find the max
+    - # do the count, do some sort of sort on the array. then pop the top values depending on the highest
+    - @author.stories.each do |story|
+      - story.themes.each do |theme|
+        = theme.name
+      - story.characters.each do |character|
+        = character.ff_name
+      - story.ships.each do |ship|
+        = ship.name
+

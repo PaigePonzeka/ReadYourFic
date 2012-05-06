@@ -12,13 +12,15 @@
  */
 body
   font-family: Arial, sans-serif
-h1
+
+h1 /* Primarily used on white backgrounds*/
   @extend .ms-4
+  +primary-foreground
 
 h2
   @extend .ms-3
 
-h3
+h3 /* Primarily used on white backgrounds*/
   @extend .ms-2
 
 h4
@@ -26,6 +28,10 @@ h4
 
 p
   @extend .ms-0
+
+a
+  +secondary-foreground
+  text-decoration: none
 
 .column-2
   width: ($wrapper-width - 20px)/2
@@ -43,6 +49,8 @@ nav
   top: 0
   left: 0
   z-index: 10
+  padding: 10px 0
+  +secondary-background
 
   .logo
     float: left
@@ -51,12 +59,20 @@ nav
     +horizontal-list
     >li
       padding-top: 5px
+
+      a
+        text-decoration: none
+        color: #fff
     li
       +horizontal-list
       margin: 0 5px
 
     .social-links
       float: right
+
+      >ul
+        background: #f0f
+
 
 
 #wrapper
@@ -72,6 +88,7 @@ nav
  * -----------------------------
  */
 footer
+  +secondary-background
   width: 100%
   position: fixed
   bottom: 0
