@@ -179,22 +179,36 @@ def generate_characters(story_characters, story)
       end
     end
 
-    #generate_ship(story_characters)
+    generate_ship(story_characters, story)
 end
 
 
 #
 # Generates a ship from a story with 2+ characters
 #
-def generate_ship(story_characters)
-  generate_log("Generating Ship Between: #{characterA} & #{characterA}")
+def generate_ship(story_characters, story)
+
   # If there are two characters, assume a ship, generate a ship relation
-  if (story_characters.length == 2)
+  if (story_characters && story_characters.length == 2)
     characterA = Character.find_by_ff_name(story_characters[0])
     characterB = Character.find_by_ff_name(story_characters[1])
+    # find the ship with each character
+    ships = Ship.joins(:characters).where("characters.id = #{characterA.id}")
 
-    # find the ship where the character is character A and character B
-    generate_log("Generating Ship Between: #{characterA} & #{characterA}")
+    ships.each do |ship|
+      ship.characters.each do |character|
+        if character.id == characterB.id
+          generate_log("Attaching #{ship.name} To #{story.title} Based on Character Tags  #{characterB.ff_name} & #{characterA.ff_name}")
+          # attach the ship to the story
+          storyrelation = Storyrelation.new()
+          storyrelation.story = story
+          storyrelation.ship = ship
+          storyrelation.save
+          return
+        end
+
+      end
+    end
   end
 
     # compare relationships_of_a to relationships_of_b to find if there is a matching ship_id
@@ -253,6 +267,11 @@ def generate_author(author_name, author_ff)
   author
 end
 
+
+#
+# Add a New story row if it doesn't already exist
+# otherwise update it
+#
 def generate_story(story_content)
   #
   # Check to see if the story exists
@@ -261,11 +280,13 @@ def generate_story(story_content)
   # check to see if a story with that FF id exists
   if story_item
     # update the story with the current data
+    generate_log("Updating Story: #{story_content['title']}", true)
     story_item.update_attributes(:title => story_content['title'],  :ff_id => story_content['ff_id'], :summary => story_content['summary'], :complete => story_content['complete'], :language => story_content['language'], :reviews => s_to_num(story_content['reviews']), :chapters => s_to_num(story_content['chapters']), :rating => story_content['rated'],:published => s_to_date(story_content['published']), :words => s_to_num(story_content['words']), :updated =>  s_to_date(story_content['updated']) )
-    generate_log("Updating Story: #{story_content['title']}")
+
   else
 
     story = Story.new()
+    generate_log("Generating New Story: #{story_content['title']}" , true)
     story.title   = story_content['title']
     story.author  = story_content['author']
     story.ff_id   = story_content['ff_id']
@@ -281,7 +302,7 @@ def generate_story(story_content)
     story.save
     generate_characters(story_content['characters'], story)
     generate_story_themes(story_content['theme'], story)
-    generate_log("Generating New Story: #{story_content['title']}")
+
   end
 
 end
@@ -308,8 +329,12 @@ end
 #
 # TODO generate actually log details
 #
-def generate_log(message)
-  puts "#{message}"
+def generate_log(message, start = false)
+  if start
+    puts "#{message}"
+  else
+    puts "\t#{message}"
+  end
 end
 
 #
@@ -343,7 +368,6 @@ def update_ships
           ["Artcedes", ["Artie A.", "Mercedes J."]],
           ["Finchel", ["Finn H.", "Rachel B."]],
           ["Puckleberry", ["Puck", "Rachel B."]],
-          ["Faberry", ["Quinn F.", "Rachel B."]],
           ["Wemma", ["Will S.", "Emma P."]]
         ]
 

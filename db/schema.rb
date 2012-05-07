@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120501122941) do
+ActiveRecord::Schema.define(:version => 20120502120310) do
 
   create_table "authors", :force => true do |t|
     t.integer  "ff_id"
@@ -71,6 +71,15 @@ ActiveRecord::Schema.define(:version => 20120501122941) do
     t.integer  "ship_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "storysearches", :force => true do |t|
+    t.string   "title"
+    t.string   "ship"
+    t.string   "reviews"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "theme"
   end
 
   create_table "storythemes", :force => true do |t|
