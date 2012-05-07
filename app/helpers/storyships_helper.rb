@@ -1,2 +1,0 @@
-module StoryshipsHelper
-end
