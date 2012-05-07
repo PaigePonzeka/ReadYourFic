@@ -1,0 +1,2 @@
+module StoryshipsHelper
+end

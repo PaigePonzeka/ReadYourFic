@@ -1,0 +1,16 @@
+= form_for @storyship do |f|
+  -if @storyship.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@storyship.errors.count, "error")} prohibited this storyship from being saved:"
+      %ul
+        - @storyship.errors.full_messages.each do |msg|
+          %li= msg
+
+  .field
+    = f.label :story_id
+    = f.number_field :story_id
+  .field
+    = f.label :ship_id
+    = f.number_field :ship_id
+  .actions
+    = f.submit 'Save'
