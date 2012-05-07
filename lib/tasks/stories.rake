@@ -17,7 +17,7 @@ namespace :db do
 #
 def generate_stories
   require 'open-uri'
-  debug = true
+  debug = false
 
   if !debug
     puts "Debugging Mode Enabled"
@@ -28,7 +28,7 @@ def generate_stories
         doc.xpath('//center/a').each do |page|
           pages.push(page.content)
           @pages = pages[pages.length-2].gsub!(',', '').to_i
-          #last page is the second to last guy
+          #last page is the second to last linked page
         end
   end
 
@@ -38,7 +38,7 @@ def generate_stories
     @pages = 4
   end
 
-  (4..@pages).each do |i|
+  (1..5).each do |i|
     if debug
       doc= Nokogiri::HTML(open("/Users/paigep/Documents/scraper/test#{i}.html"))
     else
@@ -384,6 +384,7 @@ def update_ships
 
       # For each character in the ship
       ship_characters = ship_data[1]
+      generate_log("Generating New Ship: #{ship_data[0]} between #{ship_data[1]}")
       ship_characters.each do |ship_character|
         character = generate_character(ship_character)
         # Save the relationship
@@ -391,7 +392,7 @@ def update_ships
         relationship.ship = ship
         relationship.character = character
         relationship.save
-        generate_log("Generating New Ship: #{ship_data[0]} between #{ship_data[1]}")
+
       end
     else
       ship.update_attributes(:name => ship_data[0])
