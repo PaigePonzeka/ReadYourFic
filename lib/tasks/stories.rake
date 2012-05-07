@@ -43,7 +43,12 @@ def generate_stories
     if debug
       doc= Nokogiri::HTML(open("/Users/paigep/Documents/scraper/test#{i}.html"))
     else
-      doc= Nokogiri::HTML(open("http://www.fanfiction.net/tv/Glee/10/0/0/1/0/0/0/0/0/#{i}/"))
+      begin
+        doc= Nokogiri::HTML(open("http://www.fanfiction.net/tv/Glee/10/0/0/1/0/0/0/0/0/#{i}/"))
+      rescue
+        print "Connection failed: #{$!}\n On Page: #{i}"
+      next
+
     end
 
     doc.xpath('//div[@class = "z-list"]').each do |node|

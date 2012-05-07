@@ -17,11 +17,12 @@ class Story < ActiveRecord::Base
   # Search for empty search options
   #
   #
-  def self.search(search, characters, themes)
+  def self.search(search, characters, themes, ships)
 
     # if search != nil
     #       search_string = "title like \"#{search}\""
     #     end
+
     if characters
       character_string = "#{make_query(characters, "characters.id")}"
     end
@@ -30,24 +31,24 @@ class Story < ActiveRecord::Base
       theme_string = "#{make_query(themes, "themes.id")}"
     end
 
-    # if ships
-    #      ship_string = "#{make_query(ships, "ships.id")}"
-    #    end
+    if ships
+      ship_string = "#{make_query(ships, "ships.id")}"
+    end
 
-    # if character_string && theme_string && ship_string
-    #       where("#{character_string} AND #{theme_string} AND #{ship_string}" )
-    if character_string && theme_string
+    if character_string && theme_string && ship_string
+      where("#{character_string} AND #{theme_string} AND #{ship_string}" )
+    elsif character_string && theme_string
       where("#{character_string} AND #{theme_string}" )
-    # elsif character_string && ship_string
-    #       where("#{character_string} AND #{ship_string}" )
-    #     elsif theme_string && ship_string
-    #       where("#{theme_string} AND #{ship_string}" )
+    elsif character_string && ship_string
+      where("#{character_string} AND #{ship_string}" )
+    elsif theme_string && ship_string
+      where("#{theme_string} AND #{ship_string}" )
     elsif character_string
       where(character_string)
     elsif theme_string
       where(theme_string)
-    # elsif ship_string
-    #       where(ship_string)
+    elsif ship_string
+      where(ship_string)
     else
       scoped
     end
