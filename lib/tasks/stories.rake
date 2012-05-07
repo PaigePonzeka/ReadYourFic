@@ -39,7 +39,7 @@ def generate_stories
     @pages = 4
   end
 
-  (1..5).each do |i|
+  (200..500).each do |i|
     if debug
       doc= Nokogiri::HTML(open("/Users/paigep/Documents/scraper/test#{i}.html"))
     else

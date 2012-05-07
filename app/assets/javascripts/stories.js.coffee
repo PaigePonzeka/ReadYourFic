@@ -20,15 +20,19 @@ getUrlVars = ->
   vars = {}
   characters = []
   themes = []
+  ships = []
   parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/g, (m, key, value) ->
     vars[key]=value
     if key == "character%5B%5D"
       characters.push(value)
     else if key == "themes%5B%5D"
       themes.push(value)
+    else if key == "ships%5B%5D"
+      ships.push(value)
   )
   vars["characters"] = characters
   vars["themes"] = themes
+  vars["ships"] = ships
   vars
 
 
@@ -49,9 +53,17 @@ intializeFilters= ->
       $("#character option[value=" + characters[character]+"]").attr("selected","selected")
 
 
-  # set the selected values for the characters
+  # set the selected values for the theme
   themes = url_vars['themes']
   if(themes.length > 0)
     for theme of themes
       $("#themes option[value=" + themes[theme]+"]").attr("selected","selected")
+
+  # set the selected for the ships
+  ships = url_vars['ships']
+  if(ships.length > 0)
+    for ship of ships
+      $("#ships option[value=" + ships[ship]+"]").attr("selected","selected")
+
+
 

@@ -3,7 +3,7 @@
 
   $(document).ready(function() {
     window.current_controller = $('body').attr('id');
-    console.log(current_controller);
+
     if (current_controller === "stories") {
       intializeFilters();
       return $(".chzn-select").chosen();
@@ -15,6 +15,7 @@
     vars = {};
     characters = [];
     themes = [];
+    ships = [];
     parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/g, function(m, key, value) {
       vars[key] = value;
       if (key === "character%5B%5D") {
@@ -22,9 +23,13 @@
       } else if (key === "themes%5B%5D") {
         return themes.push(value);
       }
+      } else if (key === "ships%5B%5D") {
+        return ships.push(value);
+      }
     });
     vars["characters"] = characters;
     vars["themes"] = themes;
+    vars["ships"] = ships;
     return vars;
   };
 
