@@ -20,7 +20,7 @@ def generate_stories
   debug = false
 
   if !debug
-    puts "Debugging Mode Enabled"
+
     # Open the first page To get the page numbers
      doc = Nokogiri::HTML(open('http://www.fanfiction.net/tv/Glee/'))
         #get the number of pages to scrape
@@ -35,6 +35,7 @@ def generate_stories
   # hard coding pages for now to save some time
   # in a for loop from 1 - number of pages
   if debug
+    puts "Debugging Mode Enabled"
     @pages = 4
   end
 
