@@ -9,13 +9,45 @@ namespace :db do
   # run with rake lib/tasks/stories.rake db:update_stories
   task :update_stories => :environment do
     puts "Updating Stories"
-    generate_stories
+    generate_stories(1)
   end
+
+
+def s_to_num(s)
+  if s
+    s_num = s.gsub!(',','')
+    if s_num
+      s = s_num.to_i
+    else
+      s = s.to_i
+    end
+  end
+  s
+end
+
+def s_to_date(s)
+  if s
+    s = Date.strptime(s, "%m-%d-%y")
+  end
+  s
+end
+
+#
+# TODO generate actually log details
+#
+def generate_log(message, start = false)
+  if start
+    puts "#{message}"
+  else
+    puts "\t#{message}"
+  end
+end
+
 
 #
 # Crawl FF.net to get the story details
 #
-def generate_stories
+def generate_stories(start_page)
   require 'open-uri'
   debug = false
 
@@ -39,116 +71,21 @@ def generate_stories
     @pages = 4
   end
 
-  (200..500).each do |i|
+  (start_page..@pages).each do |i|
     if debug
       doc= Nokogiri::HTML(open("/Users/paigep/Documents/scraper/test#{i}.html"))
     else
       begin
-        doc= Nokogiri::HTML(open("http://www.fanfiction.net/tv/Glee/10/0/0/1/0/0/0/0/0/#{i}/"))
+        doc = Nokogiri::HTML(open("http://www.fanfiction.net/tv/Glee/10/0/0/1/0/0/0/0/0/#{i}/"))
+        parse_doc(doc)
       rescue
-        print "Connection failed: #{$!}\n On Page: #{i}"
+        print "Connection failed: #{$!}\n On Page: #{i}...Restarting..."
+        generate_stories(i) # restart the generating on the failed page
       next
-
+      end
     end
-
-    doc.xpath('//div[@class = "z-list"]').each do |node|
-
-      story_content = Hash.new
-
-      # get an array of the all the links
-      links = Array.new
-      node.xpath('./a').each do |link_node|
-        links.push(link_node)
-      end
-       # the first link is the title
-       story_content["title"] = links[0].content
-
-       # get story id
-       url_split = links[0]['href'].split('/')
-       story_content['ff_id'] = url_split[url_split.length-3]
-
-       # the last link is reviews link or the author link
-       last_link = links[links.length-1]
-       # remove the link if its a review link
-       if ((last_link.content <=> "reviews") == 0)
-         # remove it and do it again
-         links.pop()
-         last_link = links[links.length-1]
-       end
-
-       # Set the author
-      author_name = last_link.content
-      author_url_split = last_link['href'].split('/')
-      author_ff_id = author_url_split[author_url_split.length-2]
-      story_content['author'] = generate_author(author_name, author_ff_id)
-
-      # get the gray section (details)
-      gray = ""
-      node.xpath('./div//div').each do |div_node|
-         gray=div_node.content
-         # remove the node for the summary later
-         div_node.remove
-      end
-
-      details = gray.split(" - ")
-
-      tags = Hash.new
-      # split each of those by :
-      count = 1
-      story_content['reviews'] = '0'
-      details.each do |detail|
-        detail_split = detail.split(":")
-        # If there is nothing in the second one that it isn't a set
-        if(detail_split[1] != nil)
-          story_content[detail_split[0].downcase] = detail_split[1].strip
-        else# we need to do something differnt
-          # complete status
-          if ((detail_split[0] <=> "Complete") == 0)
-            story_content['complete'] = true
-          # language
-          elsif count == 2
-            story_content['language'] = detail_split[0]
-          # Theme
-          elsif count == 3
-            story_content['theme'] = detail_split[0].split("/")
-          end
-
-          # Main Characters
-          if (count == details.length)
-            if (details[details.length-1] <=> "Complete") != 0
-              # story isn't complete characters are the last one (or published)
-              detail_split = detail.split(":")
-              if !detail_split[1] # Not published there are no characters
-                story_content['characters'] = detail_split[0].split(" & ")
-              end
-            else
-              # story is complete characters are the second to last one
-              detail_split = details[details.length-2].split(":")
-              if !detail_split[1] # Not published there are no characters
-                story_content['characters'] = details[details.length-2].split(" & ")
-              end
-            end
-          end
-
-          # defaulting to false if complete isn't set
-          if story_content['complete'] != true
-            story_content['complete'] = false
-          end
-        end
-        count+=1
-      end
-
-      # get the summary
-      node.xpath('./div').each do |summary_node|
-         story_content['summary'] = summary_node.content
-      end
-
-      generate_story(story_content)
     end
   end
-
-
-
 end
 
 
@@ -313,35 +250,106 @@ def generate_story(story_content)
 
 end
 
-def s_to_num(s)
-  if s
-    s_num = s.gsub!(',','')
-    if s_num
-      s = s_num.to_i
-    else
-      s = s.to_i
+#
+# Parses and transverses the given webpage
+#
+def parse_doc(doc)
+  doc.xpath('//div[@class = "z-list"]').each do |node|
+
+    story_content = Hash.new
+
+    # get an array of the all the links
+    links = Array.new
+    node.xpath('./a').each do |link_node|
+      links.push(link_node)
     end
-  end
-  s
+     # the first link is the title
+     story_content["title"] = links[0].content
+
+     # get story id
+     url_split = links[0]['href'].split('/')
+     story_content['ff_id'] = url_split[url_split.length-3]
+
+     # the last link is reviews link or the author link
+     last_link = links[links.length-1]
+     # remove the link if its a review link
+     if ((last_link.content <=> "reviews") == 0)
+       # remove it and do it again
+       links.pop()
+       last_link = links[links.length-1]
+     end
+
+     # Set the author
+    author_name = last_link.content
+    author_url_split = last_link['href'].split('/')
+    author_ff_id = author_url_split[author_url_split.length-2]
+    story_content['author'] = generate_author(author_name, author_ff_id)
+
+    # get the gray section (details)
+    gray = ""
+    node.xpath('./div//div').each do |div_node|
+       gray=div_node.content
+       # remove the node for the summary later
+       div_node.remove
+    end
+
+    details = gray.split(" - ")
+
+    tags = Hash.new
+    # split each of those by :
+    count = 1
+    story_content['reviews'] = '0'
+    details.each do |detail|
+      detail_split = detail.split(":")
+      # If there is nothing in the second one that it isn't a set
+      if(detail_split[1] != nil)
+        story_content[detail_split[0].downcase] = detail_split[1].strip
+      else# we need to do something differnt
+        # complete status
+        if ((detail_split[0] <=> "Complete") == 0)
+          story_content['complete'] = true
+        # language
+        elsif count == 2
+          story_content['language'] = detail_split[0]
+        # Theme
+        elsif count == 3
+          story_content['theme'] = detail_split[0].split("/")
+        end
+
+        # Main Characters
+        if (count == details.length)
+          if (details[details.length-1] <=> "Complete") != 0
+            # story isn't complete characters are the last one (or published)
+            detail_split = detail.split(":")
+            if !detail_split[1] # Not published there are no characters
+              story_content['characters'] = detail_split[0].split(" & ")
+            end
+          else
+            # story is complete characters are the second to last one
+            detail_split = details[details.length-2].split(":")
+            if !detail_split[1] # Not published there are no characters
+              story_content['characters'] = details[details.length-2].split(" & ")
+            end
+          end
+        end
+
+        # defaulting to false if complete isn't set
+        if story_content['complete'] != true
+          story_content['complete'] = false
+        end
+      end
+      count+=1
+    end
+
+    # get the summary
+    node.xpath('./div').each do |summary_node|
+       story_content['summary'] = summary_node.content
+    end
+
+    generate_story(story_content)
 end
 
-def s_to_date(s)
-  if s
-    s = Date.strptime(s, "%m-%d-%y")
-  end
-  s
-end
 
-#
-# TODO generate actually log details
-#
-def generate_log(message, start = false)
-  if start
-    puts "#{message}"
-  else
-    puts "\t#{message}"
-  end
-end
 
 #
 # Stores a datastructure with the list of the current ships

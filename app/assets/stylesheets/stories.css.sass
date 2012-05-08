@@ -1,30 +1,52 @@
 @import partials/base
+@import compass/CSS3/border-radius
+
 /*
  * Stories
  * ----------------------------
  */
 #stories
   .stories-sort
+    +clearfix
     width: $wrapper-width - 75px
-    margin: 10px auto 0 auto
+    margin: 0 auto 0 auto
+    border-top: 1px solid #ccc
+    border-bottom: 1px solid #ccc
+    padding: 10px 10px 0 10px
 
     ul.stories-sort-order
       +horizontal-list
+      padding: 10px 0 5px 0
+      float: right
       li
         float: left
+        margin: 0 10px
 
         a
+          font-size: 12px
+          color: #777
+          position: relative
 
-          &.currents
+          &.currents, &:hover
             text-decoration: none
             font-weight: bold
-            color: #000
+            +secondary-foreground
+            background: none
 
-            &.asc
-              background: #f0f
+          &.currents
+            padding-right: 15px
 
-            &.desc
-              background: #0f0
+            span.arrow
+              position: absolute
+              right: 0
+              width: 15px
+              height: 15px
+
+            &.asc span.arrow
+              @extend .small-arrow-up
+
+            &.desc span.arrow
+              @extend .small-arrow-down
 
   .stories-container
     width: $wrapper-width - 40px
