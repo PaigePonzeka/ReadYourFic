@@ -28,7 +28,7 @@
       .story-title
         %h4
           =story.title
-          %span= link_to story.author.name, "author_path(story.author)"
+          %span= link_to story.author.name, author_path(story.author)
       .story-summary
         %p=story.summary
       .story-footer

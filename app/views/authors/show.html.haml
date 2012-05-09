@@ -31,15 +31,16 @@
         -@author.stories.each do |story|
           %li= link_to story.title, story_ff_path(story.ff_id)
 
-  .column-2.tag-cloud
+  .column-2
     %h3 Tag Cloud
-    - # need to keep count of each tag and assign it
-    - # classes respectively
-    - # can do a has like story['theme-name'] = count
-    - # loop through twice?
-    - # we can get key names and counts at the same time
-    - # need to find the max
-    - # do the count, do some sort of sort on the array. then pop the top values depending on the highest
-    = generate_tag_cloud(@author).inspect
+    - tags = generate_tag_cloud(@author)
+    %ul.tag-cloud
+      - tags.each do |tag|
+        =content_tag(:li, tag[0], :class=>"#{tag[1]}")
+
+
+
+
+
 
 
