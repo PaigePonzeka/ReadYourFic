@@ -9,11 +9,10 @@ class StoriesController < ApplicationController
   helper_method :sort_column, :sort_direction
 
   def index
-    #@stories = Story.joins(:characters, :themes, :ships).search(params[:search], params[:character], params[:themes], params[:ships]).order(sort_column + " " + sort_direction).paginate(:page => params[:page],:per_page => 100)
-    #@stories = Story.select("stories.title, stories.summary, authors.name, authors.url").includes(:characters, :themes, :ships).search(params[:search], params[:character], params[:themes], params[:ships]).order(sort_column + " " + sort_direction).uniq.limit(5).paginate(:page => params[:page],:per_page => 100)
 
-    @stories = Story.order(sort_column + " " + sort_direction).paginate(:page => params[:page],:per_page => 50)
-  #  @stories = Story.order(sort_column + " " + sort_direction).uniq.limit(100).paginate(:page => params[:page],:per_page => 100)
+
+    @stories = Story.order(sort_column + " " + sort_direction).paginate(:page => params[:page],:per_page => 100)
+
 
     respond_to do |format|
       format.html # index.html.erb
@@ -103,7 +102,10 @@ class StoriesController < ApplicationController
 
   def sort_direction
     %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
+  end
 
+  def character_filter
+   protagnists.character_id = 1
   end
 
 end

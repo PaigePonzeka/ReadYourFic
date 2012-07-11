@@ -57,6 +57,8 @@
       width: $wrapper-width - 60px
       padding: 10px
       margin: 5px auto
+      padding: 5px 0
+      border-bottom: 1px solid #ccc
 
       .story-title
         h4
@@ -70,16 +72,21 @@
         p
           line-height: 18px
       .story-footer
-        position: absolute
-        bottom: 0
-        left: 0
-        padding-top: 5px
+        //position: absolute
+        //bottom: 0
+        //left: 0
+        height: 15px
+
         .story-footer-reviews
           float: left
           margin: 0 10px
+          padding: 1px
+          font-weight: bold
         ul.story-footer-tags
           float: left
+          font-size: 12px
           +horizontal-list
+          margin-top: 3px
           li
             border: 1px solid #999
             margin: 0 2px
